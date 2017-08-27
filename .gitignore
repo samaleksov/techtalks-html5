@@ -1,0 +1,6 @@
+node_modules
+*.ogv
+*.ogg
+*.mp3
+*.mp4
+.DS_Store

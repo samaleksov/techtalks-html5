@@ -1,0 +1,594 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>Building A Different Web Experience With HTML5</title>
+    <style>
+      .graph {
+          margin: 0;
+          padding: 0;
+          overflow:hidden;
+      }
+
+      .graph p{
+           text-align: center;
+           overflow: overlay;
+           position: relative;
+           color: black;
+           width: 230px;
+      }
+
+      .graph {
+          -webkit-touch-callout: none;
+          -webkit-user-select: none;
+          -khtml-user-select: none;
+          -moz-user-select: none;
+          -ms-user-select: none;
+          user-select: none;
+          background-color: rgb(248, 248, 248)
+      }
+
+      .graph #toolbox{
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          margin-bottom: 0.5em;
+          margin-left: 1em;
+          border: 2px solid #EEEEEE;
+          border-radius: 5px;
+          padding: 1em;
+          z-index: 5;
+      }
+
+      .graph #toolbox input{
+          width: 30px;
+          opacity: 0.4;
+      }
+      .graph #toolbox input:hover{
+          opacity: 1;
+          cursor: pointer;
+      }
+
+      .graph #hidden-file-upload{
+          display: none;
+      }
+
+      .graph #download-input{
+          margin: 0 0.5em;
+      }
+      .conceptG text{
+          pointer-events: none;
+      }
+
+      marker{
+          fill: #333;
+      }
+
+      g.conceptG circle{
+          fill: #F6FBFF;
+          stroke: #333;
+          stroke-width: 2px;
+      }
+
+      g.conceptG:hover circle{
+          fill: rgb(200, 238, 241);
+      }
+
+      g.selected circle{
+          fill: rgb(250, 232, 255);
+      }
+      g.selected:hover circle{
+          fill: rgb(250, 232, 255);
+      }
+
+      path.link {
+          fill: none;
+          stroke: #333;
+          stroke-width: 6px;
+          cursor: default;
+      }
+
+      path.link:hover{
+          stroke: rgb(94, 196, 204);
+      }
+
+      g.connect-node circle{
+          fill: #BEFFFF;
+      }
+
+      path.link.hidden{
+          stroke-width: 0;
+      }
+
+      path.link.selected {
+          stroke: rgb(229, 172, 247);
+      }
+    </style>
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/black.css">
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				<section>
+          <section>
+            <h2>Building A Different Web Experience With HTML5</h2>
+            <p>@samaleksov / samuil_aleksov@epam.com</p>
+          </section>
+          <section>
+            <h2>whoami</h2>
+            <p class="fragment">Full-Stack Software Engineer</p>
+            <ul>
+              <li><p class="fragment">13 years into programming</p></li>
+              <li><p class="fragment">Game development for mobile</p></li>
+              <li><p class="fragment">Computer Graphics</p></li>
+              <li><p class="fragment">Data Visualization</p></li>
+            </ul>
+          </section>
+          <section>
+            <h2>Why am I here</h2>
+            <ul>
+              <li><p class="fragment">promote diversity on the web</p></li>
+              <li><p class="fragment">less static tables and more interactivity</p></li>
+              <li><p class="fragment">ultimately allow more people to have the same experience I had on the Web</p></li>
+            </ul>
+          </section>
+        </section>
+        <section>
+          <section>
+            <p>How we build Web experiences today</p>
+          </section>
+          <section>
+            <p>Ingridients</p>
+            <ul>
+              <li>Bootstrap</li>
+              <li>Angular or React (to your preference)</li>
+              <li>Node.JS</li>
+            </ul>
+
+          </section>
+
+          <section>
+            <p>Recipe</p>
+            <ul>
+              <li class="fragment">Start with a bootstrap theme</li>
+              <li class="fragment">Create Node.JS endpoints for data</li>
+              <li class="fragment">Use Angluar or React to render some quality &lt;table&gt;s</li>
+              <li class="fragment">Profit</li>
+              <li class="fragment">Eventually add Cordova or PhoneGap <span class="fragment">(... and we now have native mobile support)</span></li>
+							<li class="fragment">???</li>
+							<li class="fragment">Profit more</li>
+            </ul>
+
+          </section>
+
+					<section>
+            <p>Our unique product</p>
+            <img style="border: none; background: none;" src="/looklike_websites_twitter_bootstrap.jpg" />
+						<p></p>
+          </section>
+
+
+
+
+          <section>
+            <p>This needs to stop</p>
+  					<p class="fragment">We can do better</p>
+          </section>
+        </section>
+
+        <section>
+          <section>
+            <p>State of the art</p>
+          </section>
+          <section>
+            <p>What can I do with JavaScript TODAY</p>
+  					<ul>
+              <li>Almost everything</li>
+  						<li>80% of the existing applications can be made to run against Chrome experimental</li>
+  						<li>Electron/Node.JS is always a good fallback</li>
+  					</ul>
+          </section>
+
+          <section>
+            <p>Where are we falling short</p>
+  					<ul>
+              <li>Filesystem API (dropped)</li>
+  						<li>Storage limits (unclear)</li>
+  						<li>GPGPU/OpenCl/CUDA (ugly workarounds)</li>
+  						<li>Raw socket access (experimental)</li>
+  					</ul>
+          </section>
+        </section>
+
+				<section>
+          <p>Tour de HTML5</p>
+					<ul>
+						<li class="fragment">WebAudio</li>
+						<li class="fragment">Video</li>
+						<li class="fragment">HIDs</li>
+						<li class="fragment">WebGL</li>
+						<li class="fragment">Interoperability/Building new experiences</li>
+						<li class="fragment">Demo & Ideas</li>
+						<li class="fragment">Q & A</li>
+					</ul>
+        </section>
+
+        <!-- WebAudio /-->
+        <section>
+          <section>
+  					<h2>WebAudio</h2>
+						<p class="fragment">&lt;audio src /&gt;</p>
+            <p class="fragment">does not just play audio </p>
+          </section>
+          <section>
+            <h2>AudioContext</h2>
+  					<p><pre><code class="hljs">const context = new AudioContext();</code></pre></p>
+          </section>
+          <section>
+            <h2>Audio Source</h2>
+  					<p><pre><code class="hljs">const trackUrl = "data:audio/ogg;base64,T2dnUwACAAAAAAAAAABcls...";
+const trackUrl = "http[s]://somewhere/myTack.ogg";
+const trackData = [79, 103, 103, 83, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 92, 150, ...];
+          </code></pre></p>
+
+          </section>
+          <section data-state="audiocontextsourceslide">
+            <h2>Decode the source</h2>
+            <p><pre><code class="hljs">const context = new AudioContext();
+let source = context.createBufferSource();
+context.decodeAudioData(trackData, buffer => {
+    source.buffer = buffer;
+    source.connect(context.destination);
+    source.loop = true;
+  }, handleError);
+          </code></pre></p>
+          <section class="fragment">
+            <h1>Play</h1>
+            <p><pre><code class="hljs">source.start(0);</code></pre></p>
+            <button id="audiocontextPlayPause">Play</button>
+          </section>
+          </section>
+
+          <section  data-state="audiocontextslide">
+            <p>Pipe, inject and mix functions over audio sources</p>
+  					<div id="audiocontext" style="width: 1024px; height: 512px;" class="graph"><svg></svg></div>
+  				</section>
+
+          <section>
+            <h1>Powerful pipeline</h1>
+            <ul>
+              <li>Effect filters (gain, wave, delay)</li>
+              <li>Channel nodes (merge split)</li>
+              <li>Analyzer nodes!</li>
+            </ul>
+          </section>
+        </section>
+        <!-- End WebAudio /-->
+
+        <!-- WebVideo  data-background-video-muted /-->
+        <section>
+          <section data-background-video="/bigBuck.ogv" data-background-video-loop  >
+  					<h2 class="fragment" style="background-color: black;">Video</h2>
+						<p class="fragment" style="background-color: black;">&lt;video src /&gt;</p>
+
+          </section>
+        </section>
+        <!-- End WebVideo /-->
+
+				<!-- HIDs /-->
+        <section>
+          <section>
+  					<p>Human interface devices</p>
+
+  					<p class="fragment">Access to USB devices and sorcery</p>
+
+          </section>
+          <section>
+  					<p>WebUSB</p>
+            <p class="fragment">Will provide us with access to data frames from specific Vendor/Product pairs</p>
+            <p class="fragment">For now we can stick to WebSockets for receiving that data</p>
+          </section>
+          <section>
+  					<p>Devices</p>
+            <p class="fragment">HMD / 6 DoF / 9 DoF</p>
+            <p class="fragment">LeapMotions' Minority report device</p>
+          </section>
+          <section>
+  					<p>WebVR</p>
+            <p class="fragment">HMD provides Position and Orientation data</p>
+            <iframe allowFullScreen width="1024" height="512" data-src="https://aframe.io/aframe/examples/showcase/shopping/"></iframe>
+          </section>
+          <section>
+  					<p>Gestures</p>
+            <iframe allowFullScreen width="1024" height="512" data-src="http://edankwan.com/experiments/touch/"></iframe>
+          </section>
+        </section>
+        <!-- End HIDs /-->
+
+        <!-- WebGL /-->
+        <section>
+          <section>
+  					<p>WebGL</p>
+  					<p class="fragment">(access to the GPU)</p>
+          </section>
+          <section>
+  					<p>Offload the heavylifting to the bodybuilders</p>
+          </section>
+          <section>
+  					<p>Year 2012</p>
+          </section>
+
+          <section>
+  					<p>1 Line</p>
+          </section>
+
+        </section>
+        <!-- End WebGL /-->
+
+
+
+        <!-- Interoperability /-->
+        <section>
+          <section>
+            <p>Interoperability</p>
+          </section>
+          <section>
+            <p>Putting it all together</p>
+            <p class="fragment">A-Frame WebComponents</p>
+						<p class="fragment">&lt;a-scene&gt;</p>
+						<p class="fragment">&lt;a-entity&gt;</p>
+						<p class="fragment">&lt;a-entity position="0 0 0" camera audio-source geometry&gt;</p>
+          </section>
+
+					<section>
+            <p>Example</p>
+						<pre style="width: 100%; font-size: 0.45em;"><code style="display: block; white-space: no-wrap;">
+<a-scene>
+    <a-assets>
+      <audio id="track1" autoplay loop src="/track1.ogg"></audio>
+      <video id="track2" autoplay loop muted src="/track2.ogv"></video>
+      <img id="floor" src="/floor.jpg">
+      <img id="skymap" src="/sky.jpg">
+    </a-assets>
+
+    <a-entity
+			geometry="primitive: box"
+			material="color: gray"
+      rotation="0 90 0"
+    ></a-entity>
+
+    <a-light type="ambient" color="#222"></a-light>
+
+    <a-entity id="sky"
+      geometry="primitive: sphere; radius: 60.5;"
+      material="src: #skymap; width: 2048"
+    ></a-entity>
+
+    <a-sound src="#track1" position="-3 1 -4"></a-sound>
+
+    <a-video
+      src="#track2"
+      width="32" height="18"
+      position="0 15 -6"></a-video>
+
+  </a-scene>
+							</code></pre>
+					</section>
+
+          <section>
+            <p>Demo</p>
+            <iframe class="fragment" allowFullScreen width="1024" height="512" data-src="/kframe/components/audioanalyser/examples/showcase/"></iframe>
+          </section>
+
+
+
+          <section>
+            <p>It's up to you to build the next best experience</p>
+          </section>
+
+        </section>
+        <!-- End Interoperability /-->
+
+				<section>
+					<h2>References</h2>
+					<ul>
+						<li><p class="fragment">A-FRAME examples https://aframe.io/examples/</p></li>
+						<li><p class="fragment">LeapMotion JavaScript Gallery https://gallery.leapmotion.com/category/javascript/</p></li>
+						<li><p class="fragment">three.js examples https://threejs.org/examples/</p></li>
+						<li><p class="fragment">gl-react https://gl-react-cookbook.surge.sh/hellogl</p></li>
+						<li><p class="fragment">GitHub https://github.com/samaleksov/techtalks-html5</p></li>
+
+
+					</ul>
+				</section>
+
+				<section>
+					<h1>Some ideas</h1>
+					<p>React/Angular + A-Frame</p>
+					<p>Angular + ReactNative + glReact</p>
+					<p>React + three.js</p>
+					<p>React + glReact</p>
+				</section>
+
+
+
+        <!-- QA /-->
+        <section>
+          <h1>Q & A</h1>
+        </section>
+
+
+
+
+				<section>
+					<h2>More from Sam</h2>
+					<ul>
+						<li><p class="fragment">Crafting killer real time apps with SignalR and SQL Server</p></li>
+						<li><p class="fragment">Advanced data visualization with D3.js</p></li>
+						<li><div class="fragment">
+								<div>One script to rule them all <img style="border: none; background: none;" width="32" height="32" src="/oneRing.png" /></div>
+							</div>
+						</li>
+
+					</ul>
+				</section>
+
+				<section>
+          <h1>Thank you!</h1>
+        </section>
+
+        <section>
+          <p>Don't break the web. Prerender your apps...</p>
+					<p class="fragment">                                           yes media as well</p>
+
+        </section>
+        <!-- End QA /-->
+
+				<!-- Paralelism /-->
+        <section>
+          <section>
+  					<p>Escaping the EventLoop / Parallel execution</p>
+          </section>
+          <section>
+  					<p>WebWorkers to the rescue</p>
+          </section>
+
+          <section>
+  					<p>GPGPU on WebGL</p>
+            <p class="fragment">Concurently process large amounts of data on the GPU and read the results back from a texture</p>
+          </section>
+          <section>
+            <p>GPGPU on WebGL</p>
+            <iframe allowFullScreen width="1024" height="512" data-src="https://threejs.org/examples/webgl_gpgpu_birds.html"></iframe>
+          </section>
+
+          <section>
+            <p>Fortunately some people sacrificed to create higher level libraries</p>
+            <p class="fragment">turbo.js</p>
+            <p class="fragment">gpu.js</p>
+          </section>
+
+
+
+        </section>
+      </section>
+        <!-- End Paralelism /-->
+
+        <!--  C/C++ heritage /-->
+        <section>
+          <section>
+            <p>Don't reinvent the wheel</p>
+            <span class="fragment">Chances are for what you're looking there already are multiple C/C++ implementations</span>
+          </section>
+          <section>
+            <p>Browser</p>
+            <p class="fragment">emscripten</p>
+            <p class="fragment">Compile C/C++ code to WebAssembly and asm.js</p>
+          </section>
+        </section>
+        <!-- End C/C++ heritage /-->
+
+			</div>
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/d3.min.js"></script>
+		<script src="js/graph-creator.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+      Reveal.addEventListener( 'audiocontextslide', function() {
+        var nodes = [{title: "track", id: 0, x: 312, y: 300},
+             {title: "speakers", id: 1, x: 612, y: 300 }];
+        var edges = [];
+        var svg = d3.select("#audiocontext").select("svg")
+              .attr("width", document.getElementById('audiocontext').clientWidth)
+              .attr("height", document.getElementById('audiocontext').clientHeight)
+        if(!svg.attr("initialized")) {
+          var graph = new GraphCreator(svg, nodes, edges);
+              graph.setIdCt(2);
+          graph.updateGraph();
+          svg.attr("initialized", true);
+        }
+
+      } );
+
+      Reveal.addEventListener( 'audiocontextsourceslide', function() {
+        const context = new AudioContext();
+        var request = new XMLHttpRequest();
+
+        var source = context.createBufferSource();
+        function downloadTrack () {
+          source = context.createBufferSource();
+          request.open('GET', 'pistolero.ogg', true);
+
+          request.responseType = 'arraybuffer';
+
+
+          request.onload = function() {
+            var audioData = request.response;
+
+            context.decodeAudioData(audioData, function(buffer) {
+                source.buffer = buffer;
+
+                source.connect(context.destination);
+                source.loop = true;
+              },
+
+              function(e){ console.log("Error with decoding audio data" + e.err); });
+
+          }
+
+          request.send();
+
+
+        }
+
+
+        const button = document.querySelector('#audiocontextPlayPause');
+        button.onclick = function() {
+          if(button.innerText === "Play")
+          {
+            downloadTrack();
+            source.start(0);
+            button.innerText = "Pause"
+          } else {
+            source.stop(0);
+            button.innerText = "Play"
+          }
+
+        };
+
+        downloadTrack();
+      } );
+			// More info about config & dependencies:
+			// - https://github.com/hakimel/reveal.js#configuration
+			// - https://github.com/hakimel/reveal.js#dependencies
+			Reveal.initialize({
+				history: true,
+				dependencies: [
+					{ src: 'plugin/markdown/marked.js' },
+					{ src: 'plugin/markdown/markdown.js' },
+					{ src: 'plugin/notes/notes.js', async: true },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'node_modules/reveal-leap-motion/reveal-leap-motion.min.js', async: true }
+				]
+			});
+		</script>
+	</body>
+</html>
